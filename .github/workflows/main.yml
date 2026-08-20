@@ -17,20 +17,21 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: |
-          cd green-legacy-initiative
-          npm install
+        run: pnpm install
 
       - name: Build
-        run: |
-          cd green-legacy-initiative
-          npm run build
+        run: pnpm --filter @workspace/green-legacy-initiative run build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./green-legacy-initiative/dist/public
+          publish_dir: ./dist/public
